@@ -64,7 +64,7 @@ namespace ly{
 
 	void World::Tick(float deltaTime)
 	{
-		LOG("Tick at frame rate %f", 1.f / deltaTime);
+		//LOG("Tick at frame rate %f", 1.f / deltaTime);
 	}
 
 }

@@ -18,14 +18,30 @@ namespace ly {
 		}
 
 		shared<sf::Texture> newTexture{ new sf::Texture };
-		if (newTexture->loadFromFile(path)) {
+		if (newTexture->loadFromFile(mRootDirectory + path)) {
 			mLoadedTextureMap.insert({path,newTexture});
 			return newTexture;
 		}
 
 		return shared<sf::Texture>{nullptr};
 	}
-	AssetManager::AssetManager()
+	void AssetManager::CleanCycle()
+	{
+		for (auto iter = mLoadedTextureMap.begin(); iter != mLoadedTextureMap.end();) {
+			if (iter->second.unique()) {
+				LOG("Cleaning texture: %s", iter->first.c_str());
+				iter = mLoadedTextureMap.erase(iter);
+			}
+			else {
+				++iter;
+			}
+		}
+	}
+	void AssetManager::SetAssetRootDirectory(const std::string& directory)
+	{
+		mRootDirectory = directory;
+	}
+	AssetManager::AssetManager() : mRootDirectory{}
 	{
 
 	}
