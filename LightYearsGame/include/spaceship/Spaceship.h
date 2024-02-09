@@ -1,6 +1,5 @@
 #pragma once
 #include "framework/Actor.h"
-//#include "framework/AssetManager.h"
 
 namespace ly {
 	class Spaceship : public Actor{
@@ -9,6 +8,9 @@ namespace ly {
 		virtual void Tick(float deltaTime) override;
 		void SetVelocity(sf::Vector2f& newVel);
 		sf::Vector2f GetVelocity() const { return mVelocity; }
+		virtual void Shoot();
+		virtual void BeginPlay() override;
+
 	private:
 		sf::Vector2f mVelocity;
 	};

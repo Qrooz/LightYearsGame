@@ -17,4 +17,13 @@ namespace ly {
     {
         mVelocity = newVel;
     }
+    void Spaceship::Shoot()
+    {
+
+    }
+    void Spaceship::BeginPlay()
+    {
+        Actor::BeginPlay();
+        SetEnablePhysics(true);
+    }
 }

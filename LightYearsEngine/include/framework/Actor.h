@@ -3,6 +3,8 @@
 #include "framework/Core.h"
 #include "framework/Object.h"
 
+class b2Body;
+
 namespace ly
 {
 	class World;
@@ -26,15 +28,29 @@ namespace ly
 		float GetActorRotation() const;
 		sf::Vector2f GetActorForwardDirection() const;
 		sf::Vector2f GetActorRightDirection() const;
+		sf::FloatRect GetActorGlobalBounds() const;
+
+		sf::Vector2u GetWindowSize() const;
+
+		World* GetWorld() const { return mOwningWorld; }
+
+		bool IsActorOutOfWindowBounds() const;
+
+		void SetEnablePhysics(bool enable);
 
 	private:
+		void InitializePhysics();
+		void UnInitializePhysics();
+		void UpdatePhysicsBodyTransform();
 		void CenterPivot();
 		World* mOwningWorld;
 		bool mHasBeganPlay;
 
 		sf::Sprite mSprite;
 		shared<sf::Texture> mTexture;
-
+		
+		b2Body* mPhysicsBody;
+		bool mPhysicsEnabled;
 	};
 
 }

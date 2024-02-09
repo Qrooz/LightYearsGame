@@ -12,6 +12,7 @@ namespace ly
 
 		template<typename WorldType>
 		weak<WorldType> LoadWorld();
+		sf::Vector2u GetWindowSize() const;
 	private:
 		void TickInternal(float deltaTime);
 		virtual void Tick(float deltaTime);

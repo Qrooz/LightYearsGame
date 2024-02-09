@@ -6,5 +6,27 @@ namespace ly {
 	float DegreesToRadians(float degrees);
 	float RadiansToDegrees(float radians);
 
+	template<typename T>
+	float GetVectorLength(const sf::Vector2<T>& vector) {
+		return std::sqrt(vector.x * vector.x + vector.y * vector.y);
+	}
 
+	template<typename T>
+	sf::Vector2<T>& ScaleVector(sf::Vector2<T>& vectorToScale, float amt) {
+		vectorToScale.x *= amt;
+		vectorToScale.y *= amt;
+		return vectorToScale;
+	}
+
+	template<typename T>
+	sf::Vector2<T>& Normalize(sf::Vector2<T>& vector) {
+
+		float VectorLength = GetVectorLength<T>(vector);
+		if (VectorLength == 0.f) {
+			return sf::Vector2<T>{};
+		}
+
+		ScaleVector<T>(vector, 1.0/VectorLength);
+		return vector;
+	}
 }

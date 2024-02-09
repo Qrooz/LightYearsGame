@@ -1,6 +1,7 @@
 #include "framework/World.h"
 #include "framework/Core.h"
 #include "framework/Actor.h"
+#include "framework/Application.h"
 
 namespace ly{
 	World::World(Application* owningApp)
@@ -32,13 +33,8 @@ namespace ly{
 		mPendingActors.clear();
 
 		for (auto iter = mActors.begin(); iter != mActors.end();) {
-			if (iter->get()->IsPendingDestroy()) {
-				iter = mActors.erase(iter);
-			}
-			else {
 				iter->get()->TickInternal(deltaTime);
 				++iter;
-			}
 		}
 
 
@@ -55,6 +51,23 @@ namespace ly{
 	World::~World()
 	{
 
+	}
+
+	sf::Vector2u World::GetWindowSize() const
+	{
+		return mOwningApp->GetWindowSize();
+	}
+
+	void World::CleanCycle()
+	{
+		for (auto iter = mActors.begin(); iter != mActors.end();) {
+			if (iter->get()->IsPendingDestroy()) {
+				iter = mActors.erase(iter);
+			}
+			else {
+				++iter;
+			}
+		}
 	}
 
 	void World::BeginPlay()

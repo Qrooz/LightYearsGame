@@ -2,6 +2,7 @@
 #include "framework/Core.h"
 #include "framework/World.h"
 #include "framework/AssetManager.h"
+#include "framework/PhysicsSystem.h"
 
 namespace ly {
 
@@ -38,6 +39,10 @@ namespace ly {
 			}
 		}
 	}
+	sf::Vector2u Application::GetWindowSize() const
+	{
+		return mWindow.getSize();
+	}
 	void Application::TickInternal(float deltaTime)
 	{
 		Tick(deltaTime);
@@ -46,10 +51,16 @@ namespace ly {
 			currentWorld->TickInternal(deltaTime);
 		}
 
+		PhysicsSystem::Get().Step(deltaTime);
+
 		if (mCleanCycleClock.getElapsedTime().asSeconds() >= mCleanCycleInterval) {
 			mCleanCycleClock.restart();
 			AssetManager::Get().CleanCycle();
+			if (currentWorld) {
+				currentWorld->CleanCycle();
+			}
 		}
+
 	}
 	void Application::Tick(float deltaTime)
 	{
