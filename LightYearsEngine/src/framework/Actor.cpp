@@ -13,7 +13,8 @@ namespace ly {
 		mSprite{},
 		mTexture{},
 		mPhysicsBody{nullptr},
-		mPhysicsEnabled{false}
+		mPhysicsEnabled{false},
+		mTeamID{GetNeutralTeamID()}
 	{
 		SetTexture(texturePath);
 	}
@@ -35,7 +36,7 @@ namespace ly {
 
 	void Actor::BeginPlay()
 	{
-		LOG("Actor Begin Play");
+		//LOG("Actor Begin Play");
 	}
 
 	void Actor::Tick(float deltaTime)
@@ -141,6 +142,31 @@ namespace ly {
 			UnInitializePhysics();
 		}
 	}
+	void Actor::OnActorBeginOverlap(Actor* other)
+	{
+		//LOG("Overlapped");
+	}
+	void Actor::OnActorEndOverlap(Actor* other)
+	{
+		//LOG("End overlap");
+	}
+	void Actor::Destroy()
+	{
+		UnInitializePhysics();
+		Object::Destroy();
+	}
+	bool Actor::IsOtherHostile(Actor* other) const
+	{
+		if (GetTeamID() == GetNeutralTeamID() || other->GetTeamID() == GetNeutralTeamID()) {
+			return false;
+		}
+
+		return GetTeamID() != other->GetTeamID();
+	}
+	void Actor::ApplyDamage(float amt)
+	{
+
+	}
 	void Actor::InitializePhysics()
 	{
 		if (!mPhysicsBody) {
@@ -151,6 +177,7 @@ namespace ly {
 	{
 		if (mPhysicsBody) {
 			PhysicsSystem::Get().RemoveListener(mPhysicsBody);
+			mPhysicsBody = nullptr;
 		}
 	}
 	void Actor::UpdatePhysicsBodyTransform()

@@ -29,4 +29,10 @@ namespace ly {
 		ScaleVector<T>(vector, 1.0/VectorLength);
 		return vector;
 	}
+
+	sf::Color LerpColor(const sf::Color& a, const sf::Color& b, float alpha);
+
+	sf::Vector2f LerpVector(const sf::Vector2f& a, const sf::Vector2f& b, float alpha);
+
+	float LerpFloat(float a, float b, float alpha);
 }

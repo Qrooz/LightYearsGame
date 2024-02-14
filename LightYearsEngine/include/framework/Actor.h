@@ -32,11 +32,26 @@ namespace ly
 
 		sf::Vector2u GetWindowSize() const;
 
-		World* GetWorld() const { return mOwningWorld; }
+		const World* GetWorld() const { return mOwningWorld; }
+		World* GetWorld() { return mOwningWorld; }
 
 		bool IsActorOutOfWindowBounds() const;
 
 		void SetEnablePhysics(bool enable);
+		virtual void OnActorBeginOverlap(Actor* other);
+		virtual void OnActorEndOverlap(Actor* other);
+		virtual void Destroy() override;
+		static uint8 GetNeutralTeamID() { return neutralTeamID; }
+
+		void SetTeamID(uint8 teamID) { mTeamID = teamID; }
+
+		uint8 GetTeamID() const { return mTeamID; }
+		bool IsOtherHostile(Actor* other) const;
+
+		virtual void ApplyDamage(float amt);
+
+		sf::Sprite& GetSprite() { return mSprite;  }
+		const sf::Sprite& GetSprite() const { return mSprite; }
 
 	private:
 		void InitializePhysics();
@@ -51,6 +66,10 @@ namespace ly
 		
 		b2Body* mPhysicsBody;
 		bool mPhysicsEnabled;
+
+		uint8 mTeamID;
+
+		const static uint8 neutralTeamID = 255;
 	};
 
 }
