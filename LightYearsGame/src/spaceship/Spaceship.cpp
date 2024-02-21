@@ -19,7 +19,7 @@ namespace ly {
         AddActorLocationOffset(GetVelocity() * deltaTime);
         UpdateBlink(deltaTime);
     }
-    void Spaceship::SetVelocity(sf::Vector2f& newVel)
+    void Spaceship::SetVelocity(const sf::Vector2f& newVel)
     {
         mVelocity = newVel;
     }
