@@ -97,7 +97,7 @@ namespace ly {
 	}
 	sf::Vector2f Actor::GetActorRightDirection() const
 	{
-		return RotationToVector(GetActorRotation() + 90);
+		return RotationToVector(GetActorRotation() - 180); //had no -180 b4
 	}
 	sf::FloatRect Actor::GetActorGlobalBounds() const
 	{
@@ -126,7 +126,7 @@ namespace ly {
 		if (actorPos.y < -height - allowance) {
 			return true;
 		}
-		if (actorPos.x > windowHeight + height + allowance) {
+		if (actorPos.y > windowHeight + height + allowance) {
 			return true;
 		}
 

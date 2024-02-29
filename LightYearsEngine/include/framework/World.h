@@ -7,6 +7,8 @@ namespace ly
 {
 	class Actor;
 	class Application;
+	class GameStage;
+
 	class World : public Object{
 	public:
 		World(Application* owningApp);
@@ -22,7 +24,7 @@ namespace ly
 
 		sf::Vector2u GetWindowSize() const;
 		void CleanCycle();
-
+		void AddStage(const shared<GameStage> newStage);
 	private:
 		virtual void BeginPlay();
 		virtual void Tick(float deltaTime);
@@ -31,6 +33,14 @@ namespace ly
 
 		List<shared<Actor>> mActors;
 		List<shared<Actor>> mPendingActors;
+		List<shared<GameStage>> mGameStages;
+
+		List<shared<GameStage>>::iterator mCurrentStage;
+		
+		virtual void InitGameStages();
+		void NextGameStage();
+		virtual void AllStageFinished();
+		void StartStages();
 	};
 
 	template<typename ActorType, typename... Args>

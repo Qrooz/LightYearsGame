@@ -2,13 +2,16 @@
 #include "framework/Core.h"
 #include "framework/Actor.h"
 #include "framework/Application.h"
+#include "gameplay/GameStage.h"
 
 namespace ly{
 	World::World(Application* owningApp)
 		: mOwningApp{owningApp},
 		mBeganPlay{false},
 		mActors{},
-		mPendingActors{}
+		mPendingActors{},
+		mGameStages{},
+		mCurrentStage{mGameStages.end()}
 	{
 
 	}
@@ -18,6 +21,8 @@ namespace ly{
 		if(!mBeganPlay) {
 			mBeganPlay = true;
 			BeginPlay();
+			InitGameStages();
+			StartStages();
 		}
 
 
@@ -35,6 +40,10 @@ namespace ly{
 		for (auto iter = mActors.begin(); iter != mActors.end();) {
 				iter->get()->TickInternal(deltaTime);
 				++iter;
+		}
+
+		if (mCurrentStage != mGameStages.end()) {
+			mCurrentStage->get()->TickStage(deltaTime);
 		}
 
 
@@ -68,6 +77,13 @@ namespace ly{
 				++iter;
 			}
 		}
+
+
+	}
+
+	void World::AddStage(const shared<GameStage> newStage)
+	{
+		mGameStages.push_back(newStage);
 	}
 
 	void World::BeginPlay()
@@ -78,6 +94,35 @@ namespace ly{
 	void World::Tick(float deltaTime)
 	{
 		//LOG("Tick at frame rate %f", 1.f / deltaTime);
+	}
+
+	void World::InitGameStages()
+	{
+
+	}
+
+	void World::NextGameStage()
+	{
+		mCurrentStage = mGameStages.erase(mCurrentStage);
+		if (mCurrentStage != mGameStages.end()) {
+			mCurrentStage->get()->StartStage();
+			mCurrentStage->get()->onStageFinished.BindAction(GetWeakRef(), &World::NextGameStage);
+		}
+		else {
+			AllStageFinished();
+		}
+	}
+
+	void World::AllStageFinished()
+	{
+		LOG("All Stages Finished");
+	}
+
+	void World::StartStages()
+	{
+		mCurrentStage = mGameStages.begin();
+		mCurrentStage->get()->StartStage();
+		mCurrentStage->get()->onStageFinished.BindAction(GetWeakRef(), &World::NextGameStage);
 	}
 
 }
