@@ -2,6 +2,8 @@
 #include "SFML/System.hpp"
 #include "framework/MathUtility.h"
 #include "weapon/BulletShooter.h"
+#include "weapon/ThreeWayShooter.h"
+#include "weapon/FrontalWiper.h"
 
 namespace ly {
 	PlayerSpaceship::PlayerSpaceship(World* owningWorld, const std::string& path)
