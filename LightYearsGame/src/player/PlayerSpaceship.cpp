@@ -26,6 +26,17 @@ namespace ly {
 			mShooter->Shoot();
 		}
 	}
+	
+	void PlayerSpaceship::SetShooter(unique<Shooter>&& newShooter)
+	{
+		if (mShooter && typeid(*mShooter.get()) == typeid(*newShooter.get()))
+		{
+			mShooter->IncrementLevel();
+			return;
+		}
+		mShooter = std::move(newShooter);
+	}
+	
 	void PlayerSpaceship::HandleInput()
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {

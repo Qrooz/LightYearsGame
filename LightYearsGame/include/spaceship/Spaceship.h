@@ -12,6 +12,7 @@ namespace ly {
 		virtual void Shoot();
 		virtual void BeginPlay() override;
 		virtual void ApplyDamage(float amt) override;
+		HealthComponent& GetHealthComp() { return mHealthComp; }
 	private:
 		void Blink();
 
@@ -19,7 +20,8 @@ namespace ly {
 
 		virtual void OnHealthChanged(float amt, float health, float maxHealth);
 		virtual void OnTakenDamage(float amt, float health, float maxHealth);
-		virtual void Blow();
+		void Blow();
+		virtual void Blew();
 		sf::Vector2f mVelocity;
 		HealthComponent mHealthComp;
 

@@ -55,19 +55,28 @@ namespace ly {
             GetSprite().setColor(LerpColor(sf::Color::White, mBlinkColorOffset, mBlinkTime));
         }
     }
+    
     void Spaceship::OnHealthChanged(float amt, float health, float maxHealth)
     {
         LOG("Health Changed by: %f, and is now: %f/%f", amt, health, maxHealth);
     }
+    
     void Spaceship::OnTakenDamage(float amt, float health, float maxHealth)
     {
         Blink();
     }
+    
     void Spaceship::Blow()
     {
         Explosion* exp = new Explosion();
         exp->SpawnExplosion(GetWorld(), GetActorLocation());
+        Blew();
         Destroy();
         delete exp;
+    }
+    
+    void Spaceship::Blew()
+    {
+          
     }
 }

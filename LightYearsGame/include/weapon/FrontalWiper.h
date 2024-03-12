@@ -9,7 +9,7 @@ namespace ly {
 			float cooldownTime = 0.3f, 
 			const sf::Vector2f& localOffset = { 0.f,0.f },
 			float width = 60.f);
-
+		virtual void IncrementLevel(int amt = 1) override;
 	private:
 		virtual void ShootImpl() override;
 
@@ -19,6 +19,9 @@ namespace ly {
 		BulletShooter mShooter2;
 		BulletShooter mShooter3;
 		BulletShooter mShooter4;
+
+		BulletShooter mShooter5;
+		BulletShooter mShooter6;
 	};
 
 }
