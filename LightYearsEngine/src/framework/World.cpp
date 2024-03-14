@@ -3,6 +3,7 @@
 #include "framework/Actor.h"
 #include "framework/Application.h"
 #include "gameplay/GameStage.h"
+#include "widgets/HUD.h"
 
 namespace ly{
 	World::World(Application* owningApp)
@@ -48,6 +49,10 @@ namespace ly{
 
 
 		Tick(deltaTime);
+
+		if (mHUD && !mHUD->HasInit()) {
+			mHUD->NativeInit(mOwningApp->GetWindow());
+		}
 	}
 
 	void World::Render(sf::RenderWindow& window)
@@ -55,6 +60,7 @@ namespace ly{
 		for (auto& actor : mActors) {
 			actor->Render(window);
 		}
+		RenderHUD(window);
 	}
 
 	World::~World()
@@ -86,6 +92,13 @@ namespace ly{
 		mGameStages.push_back(newStage);
 	}
 
+	bool World::DispatchEvent(const sf::Event& event)
+	{
+		if (mHUD) {
+			return mHUD->HandleEvent(event);
+		}
+	}
+
 	void World::BeginPlay()
 	{
 		LOG("began play ");
@@ -94,6 +107,13 @@ namespace ly{
 	void World::Tick(float deltaTime)
 	{
 		//LOG("Tick at frame rate %f", 1.f / deltaTime);
+	}
+
+	void World::RenderHUD(sf::RenderWindow& window)
+	{
+		if (mHUD) {
+			mHUD->Draw(window);
+		}
 	}
 
 	void World::InitGameStages()

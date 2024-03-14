@@ -11,7 +11,7 @@ namespace ly {
 		: mWindow{ sf::VideoMode(windowWidth, windowHeight), title, style},
 		mTargetFrameRate{ 60.f },
 		mTickClock{},
-		currentWorld{ nullptr },
+		mCurrentWorld{ nullptr },
 		mCleanCycleClock{},
 		mCleanCycleInterval{2.f}
 	{
@@ -29,6 +29,9 @@ namespace ly {
 				if (windowEvent.type == sf::Event::EventType::Closed) {
 					mWindow.close();
 				}
+				else {
+					DispatchEvent(windowEvent);
+				}
 			}
 
 			float frameDeltaTime = mTickClock.restart().asSeconds();
@@ -44,12 +47,20 @@ namespace ly {
 	{
 		return mWindow.getSize();
 	}
+	
+	bool Application::DispatchEvent(const sf::Event& event)
+	{
+		if (mCurrentWorld) {
+			return mCurrentWorld->DispatchEvent(event);
+		}
+	}
+
 	void Application::TickInternal(float deltaTime)
 	{
 		Tick(deltaTime);
 
-		if (currentWorld) {
-			currentWorld->TickInternal(deltaTime);
+		if (mCurrentWorld) {
+			mCurrentWorld->TickInternal(deltaTime);
 		}
 
 
@@ -60,8 +71,8 @@ namespace ly {
 		if (mCleanCycleClock.getElapsedTime().asSeconds() >= mCleanCycleInterval) {
 			mCleanCycleClock.restart();
 			AssetManager::Get().CleanCycle();
-			if (currentWorld) {
-				currentWorld->CleanCycle();
+			if (mCurrentWorld) {
+				mCurrentWorld->CleanCycle();
 			}
 		}
 
@@ -78,10 +89,8 @@ namespace ly {
 	}
 	void Application::Render()
 	{
-
-		if (currentWorld) {
-			currentWorld->Render(mWindow);
+		if (mCurrentWorld) {
+			mCurrentWorld->Render(mWindow);
 		}
-
 	}
 }
