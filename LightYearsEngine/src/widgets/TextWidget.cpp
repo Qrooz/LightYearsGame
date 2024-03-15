@@ -3,8 +3,8 @@
 
 namespace ly {
 	TextWidget::TextWidget(const std::string& textStr, const std::string& fontPath, unsigned int characterSize)
-		:mFont{ AssetManager::Get().LoadFont(fontPath),},
-		mText{textStr, *mFont.get(), characterSize}
+		:mFont{ AssetManager::Get().LoadFont(fontPath)},
+		mText{textStr, *(mFont.get()), characterSize}
 	{
 
 	}

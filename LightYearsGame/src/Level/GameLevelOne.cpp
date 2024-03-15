@@ -11,6 +11,7 @@
 #include "gameplay/WaitStage.h"
 #include "player/PlayerSpaceship.h"
 #include "player/PlayerManager.h"
+#include "widgets/GameplayHUD.h"
 
 
 namespace ly {
@@ -25,6 +26,7 @@ namespace ly {
 		Player newPlayer = PlayerManager::Get().CreateNewPlayer();
 		mPlayerSpaceship = newPlayer.SpawnSpaceShip(this);
 		mPlayerSpaceship.lock()->onActorDestroyed.BindAction(GetWeakRef(), &GameLevelOne::PlayerSpaceshipDestroyed);
+		mGameplayHUD = SpawnHUD<GameplayHUD>();
 	}
 
 	void GameLevelOne::PlayerSpaceshipDestroyed(Actor* destroyedPlayerSpaceship)

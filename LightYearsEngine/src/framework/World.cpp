@@ -97,6 +97,7 @@ namespace ly{
 		if (mHUD) {
 			return mHUD->HandleEvent(event);
 		}
+		return false;
 	}
 
 	void World::BeginPlay()

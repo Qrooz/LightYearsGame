@@ -22,8 +22,8 @@ namespace ly {
 
 	void AssetManager::CleanCycle()
 	{
-		CleanUniqueRef(mLoadedTextureMap);
 		CleanUniqueRef(mLoadedFontMap);
+		CleanUniqueRef(mLoadedTextureMap);
 	}
 	void AssetManager::SetAssetRootDirectory(const std::string& directory)
 	{
