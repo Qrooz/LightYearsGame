@@ -14,6 +14,8 @@ namespace ly {
 
 		void SetVisibility(bool newVisibility);
 		bool GetVisibility() const { return mIsVisible; }
+		virtual sf::FloatRect GetBound() const;
+		sf::Vector2f GetCenterPosition() const;
 
 	protected:
 		Widget();

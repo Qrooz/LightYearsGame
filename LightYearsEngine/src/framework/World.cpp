@@ -51,7 +51,9 @@ namespace ly{
 		Tick(deltaTime);
 
 		if (mHUD && !mHUD->HasInit()) {
-			mHUD->NativeInit(mOwningApp->GetWindow());
+			if(!mHUD->HasInit())
+				mHUD->NativeInit(mOwningApp->GetWindow());
+			mHUD->Tick(deltaTime);
 		}
 	}
 
