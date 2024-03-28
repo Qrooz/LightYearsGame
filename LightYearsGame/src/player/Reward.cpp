@@ -3,7 +3,7 @@
 #include "player/Reward.h"
 #include "weapon/FrontalWiper.h"
 #include "weapon/ThreeWayShooter.h"
-
+#include "player/PlayerManager.h"
 
 namespace ly {
 	Reward::Reward(World* world, const std::string& texturePath, RewardFunc rewardFunc, float speed)
@@ -27,12 +27,24 @@ namespace ly {
 	
 	void Reward::OnActorBeginOverlap(Actor* otherActor)
 	{
-		//TODO: clean up casting.
-		PlayerSpaceship* playerSpaceship = dynamic_cast<PlayerSpaceship*>(otherActor);
-		if (playerSpaceship != nullptr && !playerSpaceship->IsPendingDestroy()) {
-			mRewardFunc(playerSpaceship);
+		if (!otherActor || otherActor->IsPendingDestroy()) {
+			return;
+		}
+
+		if (!PlayerManager::Get().GetPlayer()) {
+			return;
+		}
+
+		weak<PlayerSpaceship> playerSpaceship = PlayerManager::Get().GetPlayer()->GetCurrentSpaceship();
+		if (playerSpaceship.expired() || playerSpaceship.lock()->IsPendingDestroy()) {
+			return;
+		}
+
+		if (playerSpaceship.lock()->GetUniqueID() == otherActor->GetUniqueID()) {
+			mRewardFunc(playerSpaceship.lock().get());
 			Destroy();
 		}
+
 	}
 	
 	weak<Reward> CreateHealthReward(World* world)
