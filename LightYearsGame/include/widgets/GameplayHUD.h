@@ -3,6 +3,7 @@
 #include "widgets/TextWidget.h"
 #include "widgets/ValueGauge.h"
 #include "widgets/ImageWidget.h"
+#include "widgets/Button.h"
 
 namespace ly {
 	class Actor;
@@ -12,18 +13,28 @@ namespace ly {
 
 		virtual void Draw(sf::RenderWindow& windowRef) override;
 		virtual void Tick(float deltaTime) override;
-
+		virtual bool HandleEvent(const sf::Event& event) override;
 	private:
 		virtual void Init(const sf::RenderWindow& windowRef) override;
-		void PlayerHealthUpdated(float amt, float currentHealth, float maxHealth);
-		void PlayerSpaceshipDestroyed(Actor* actor);
 		void RefreshHealthBar();
+		void ConnectPlayerStatus();
+		void PlayerHealthUpdated(float amt, float currentHealth, float maxHealth);
 		void PlayerLifeCountUpdated(int amt);
-		void ConnectPlayerLifeCount();
+		void PlayerScoreUpdated(int newScore);
+		void PlayerSpaceshipDestroyed(Actor* actor);
 		TextWidget mFramerateText;
 		ValueGauge mPlayerHealthBar;
 		ImageWidget mPlayerLifeIcon;
 		TextWidget mPlayerLifeText;
+
+		ImageWidget mPlayerScoreIcon;
+		TextWidget mPlayerScoreText;
+
+		//TODO: remove
+		void TestButtonClick();
+		//TODO: remove
+		Button testButton;
+
 		sf::Color mHealthyHealthBarColor;
 		sf::Color mCriticalHealthBarColor;
 		float mCriticalThreshold;
