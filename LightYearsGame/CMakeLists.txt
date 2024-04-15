@@ -59,8 +59,14 @@ add_executable(${LIGHT_YEARS_GAME_TARGET_NAME}
 	${CMAKE_CURRENT_SOURCE_DIR}/include/Enemy/UFOStage.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Enemy/UFOStage.cpp
 
+	${CMAKE_CURRENT_SOURCE_DIR}/include/Enemy/ChaosStage.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/Enemy/ChaosStage.cpp
+
 	${CMAKE_CURRENT_SOURCE_DIR}/include/Level/GameLevelOne.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Level/GameLevelOne.cpp
+
+	${CMAKE_CURRENT_SOURCE_DIR}/include/Level/MainMenuLevel.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/Level/MainMenuLevel.cpp
 
 	${CMAKE_CURRENT_SOURCE_DIR}/include/player/Reward.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/player/Reward.cpp
@@ -73,6 +79,9 @@ add_executable(${LIGHT_YEARS_GAME_TARGET_NAME}
 
 	${CMAKE_CURRENT_SOURCE_DIR}/include/widgets/ValueGauge.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/widgets/ValueGauge.cpp
+
+	${CMAKE_CURRENT_SOURCE_DIR}/include/widgets/MainMenuHUD.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/widgets/MainMenuHUD.cpp
 	
 	${CMAKE_CURRENT_SOURCE_DIR}/include/player/PlayerManager.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/player/PlayerManager.cpp

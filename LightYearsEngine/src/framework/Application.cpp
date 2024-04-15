@@ -27,7 +27,7 @@ namespace ly {
 			sf::Event windowEvent;
 			while (mWindow.pollEvent(windowEvent)) {
 				if (windowEvent.type == sf::Event::EventType::Closed) {
-					mWindow.close();
+					QuitApplication();
 				}
 				else {
 					DispatchEvent(windowEvent);
@@ -48,6 +48,11 @@ namespace ly {
 		return mWindow.getSize();
 	}
 	
+	void Application::QuitApplication()
+	{
+		mWindow.close();
+	}
+
 	bool Application::DispatchEvent(const sf::Event& event)
 	{
 		if (mCurrentWorld) {
@@ -77,6 +82,10 @@ namespace ly {
 			}
 		}
 
+		if (mPendingWorld && mPendingWorld != mCurrentWorld) {
+			mCurrentWorld = mPendingWorld;
+			mCurrentWorld->BeginPlayInternal();
+		}
 	}
 	void Application::Tick(float deltaTime)
 	{

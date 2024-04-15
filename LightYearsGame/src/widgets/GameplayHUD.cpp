@@ -15,8 +15,7 @@ namespace ly {
 		mHealthyHealthBarColor{128,255,128,255},
 		mCriticalHealthBarColor{255,0,0,255},
 		mCriticalThreshold{0.3},
-		mWidgetSpacing{10.f},
-		testButton{}
+		mWidgetSpacing{10.f}
 	{
 		mFramerateText.SetTextSize(30);
 		mPlayerLifeText.SetTextSize(20);
@@ -31,7 +30,6 @@ namespace ly {
 		mPlayerLifeText.NativeDraw(windowRef);
 		mPlayerScoreIcon.NativeDraw(windowRef);
 		mPlayerScoreText.NativeDraw(windowRef);
-		testButton.NativeDraw(windowRef);
 	}
 	void GameplayHUD::Tick(float deltaTime)
 	{
@@ -43,7 +41,7 @@ namespace ly {
 	bool GameplayHUD::HandleEvent(const sf::Event& event)
 	{
 		HUD::HandleEvent(event);
-		return testButton.HandleEvent(event) || HUD::HandleEvent(event);
+		return HUD::HandleEvent(event);
 	}
 	
 	void GameplayHUD::Init(const sf::RenderWindow& windowRef)
@@ -62,10 +60,6 @@ namespace ly {
 
 		nextWidgetPos += sf::Vector2f{ mPlayerScoreIcon.GetBound().width + mWidgetSpacing, 0.f };
 		mPlayerScoreText.SetWidgetLocation(nextWidgetPos);
-
-		testButton.SetWidgetLocation({ windowSize.x / 2.f, windowSize.y / 2.f });
-		testButton.SetTextCharacterSize(20);
-		testButton.onButtonClicked.BindAction(GetWeakRef(), &GameplayHUD::TestButtonClick);
 
 		RefreshHealthBar();
 		ConnectPlayerStatus();
@@ -122,9 +116,5 @@ namespace ly {
 	{
 		RefreshHealthBar();
 	}
-	
-	void GameplayHUD::TestButtonClick()
-	{
-		LOG("ButtonClicked");
-	}
+
 }

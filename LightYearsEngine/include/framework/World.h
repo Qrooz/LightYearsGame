@@ -30,6 +30,8 @@ namespace ly
 		void CleanCycle();
 		void AddStage(const shared<GameStage> newStage);
 		bool DispatchEvent(const sf::Event& event);
+		Application* GetApplication() { return mOwningApp; }
+		const Application* GetApplication() const { return mOwningApp; }
 	private:
 		virtual void BeginPlay();
 		virtual void Tick(float deltaTime);
