@@ -13,6 +13,11 @@ namespace ly {
 		if (mCurrentLevel == mMaxLevel) return;
 		++mCurrentLevel;
 	}
+
+	void Shooter::SetCurrentLevel(int level)
+	{
+		mCurrentLevel = level;
+	}
 	
 	Shooter::Shooter(Actor* owner)
 		: mOwner{owner},
