@@ -44,8 +44,8 @@ namespace ly {
 		mShooter2{ ownerActor, cooldownTime, {localOffset.x - width / 6.f, localOffset.y}, 0.f + rotationOffset, "SpaceShooterRedux/PNG/Lasers/laserBlue07.png" },
 		mShooter3{ ownerActor, cooldownTime, {localOffset.x + width / 6.f, localOffset.y}, 0.f + rotationOffset, "SpaceShooterRedux/PNG/Lasers/laserBlue07.png" },
 		mShooter4{ ownerActor, cooldownTime, {localOffset.x + width / 2.f, localOffset.y}, 0.f + rotationOffset, "SpaceShooterRedux/PNG/Lasers/laserGreen11.png" },
-		mShooter5{ ownerActor, 0.1f, {localOffset.x - width / 1.25f, localOffset.y}, 0.f + rotationOffset, "SpaceShooterRedux/PNG/Lasers/laserGreen11.png" },
-		mShooter6{ ownerActor, 0.1f, {localOffset.x + width / 1.25f, localOffset.y}, 0.f + rotationOffset, "SpaceShooterRedux/PNG/Lasers/laserGreen11.png" }
+		mShooter5{ ownerActor, cooldownTime, {localOffset.x - width / 1.25f, localOffset.y}, 0.f + rotationOffset, "SpaceShooterRedux/PNG/Lasers/laserGreen11.png" },
+		mShooter6{ ownerActor, cooldownTime, {localOffset.x + width / 1.25f, localOffset.y}, 0.f + rotationOffset, "SpaceShooterRedux/PNG/Lasers/laserGreen11.png" }
 	{
 
 	}
@@ -57,6 +57,8 @@ namespace ly {
 		mShooter2.IncrementLevel(amt);
 		mShooter3.IncrementLevel(amt);
 		mShooter4.IncrementLevel(amt);
+		mShooter5.IncrementLevel(amt);
+		mShooter6.IncrementLevel(amt);
 	}
 	
 	void FrontalWiperBoss::SetCurrentLevel(int newLevel)
@@ -66,6 +68,8 @@ namespace ly {
 		mShooter2.SetCurrentLevel(newLevel);
 		mShooter3.SetCurrentLevel(newLevel);
 		mShooter4.SetCurrentLevel(newLevel);
+		mShooter5.SetCurrentLevel(newLevel);
+		mShooter6.SetCurrentLevel(newLevel);
 	}
 	
 	void FrontalWiperBoss::ShootImpl()

@@ -5,8 +5,10 @@
 #include "Enemy/HexagonStage.h"
 #include "Enemy/TwinBladeStage.h"
 #include "Enemy/VanguardStage.h"
-#include "framework/World.h"
 #include "framework/Actor.h"
+#include "framework/BackdropActor.h"
+#include "framework/Application.h"
+#include "framework/World.h"
 #include "framework/AssetManager.h"
 #include "framework/TimerManager.h"
 #include "gameplay/GameStage.h"
@@ -15,7 +17,6 @@
 #include "player/PlayerManager.h"
 #include "widgets/GameplayHUD.h"
 
-
 namespace ly {
 	GameLevelOne::GameLevelOne(Application* owningApp)
 		:World{owningApp}
@@ -23,12 +24,19 @@ namespace ly {
 		
 
 	}
+	void GameLevelOne::AllStageFinished()
+	{
+		mGameplayHUD.lock()->GameFinished(true);
+	}
 	void GameLevelOne::BeginPlay()
 	{
+		SpawnCosmetics();
 		Player& newPlayer = PlayerManager::Get().CreateNewPlayer();
 		mPlayerSpaceship = newPlayer.SpawnSpaceShip(this);
 		mPlayerSpaceship.lock()->onActorDestroyed.BindAction(GetWeakRef(), &GameLevelOne::PlayerSpaceshipDestroyed);
 		mGameplayHUD = SpawnHUD<GameplayHUD>();
+		mGameplayHUD.lock()->onQuitBtnClicked.BindAction(GetWeakRef(), &GameLevelOne::QuitGame);
+		mGameplayHUD.lock()->onRestartBtnClicked.BindAction(GetWeakRef(), &GameLevelOne::Restart);
 	}
 
 	void GameLevelOne::PlayerSpaceshipDestroyed(Actor* destroyedPlayerSpaceship)
@@ -44,26 +52,41 @@ namespace ly {
 
 	void GameLevelOne::InitGameStages()
 	{
-		//AddStage(shared<WaitStage>{new WaitStage{ this, 5.f }});
-		AddStage(shared<BossStage>{new BossStage{this}});
 		
 		AddStage(shared<WaitStage>{new WaitStage{ this, 5.f }});
 		AddStage(shared<VanguardStage>{new VanguardStage{ this }});
 		
-		AddStage(shared<WaitStage>{new WaitStage{ this, 10.f }});
+		AddStage(shared<WaitStage>{new WaitStage{ this, 5.f }});
 		AddStage(shared<TwinBladeStage>{new TwinBladeStage{ this }});
 		
-		AddStage(shared<WaitStage>{new WaitStage{ this, 10.f }});
+		AddStage(shared<WaitStage>{new WaitStage{ this, 5.f }});
 		AddStage(shared<HexagonStage>{new HexagonStage{ this }});
 		
-		AddStage(shared<WaitStage>{new WaitStage{ this, 10.f }});
+		AddStage(shared<WaitStage>{new WaitStage{ this, 5.f }});
 		AddStage(shared<UFOStage>{new UFOStage{this}});
 		
 		AddStage(shared<WaitStage>{new WaitStage{ this, 5.f }});
 		AddStage(shared<ChaosStage>{new ChaosStage{ this }});
+
+		AddStage(shared<WaitStage>{new WaitStage{ this, 5.f }});
+		AddStage(shared<BossStage>{new BossStage{this}});
+	}
+	void GameLevelOne::QuitGame()
+	{
+		GetApplication()->QuitApplication();
+	}
+	void GameLevelOne::Restart()
+	{
+		PlayerManager::Get().Reset();
+		GetApplication()->LoadWorld<GameLevelOne>();
 	}
 	void GameLevelOne::GameOver()
 	{
-		LOG("Game Over! ====================================================");
+		mGameplayHUD.lock()->GameFinished(false);
+	}
+	
+	void GameLevelOne::SpawnCosmetics()
+	{
+		auto backdropActor = SpawnActor<BackdropActor>("SpaceShooterRedux/Backgrounds/darkPurple.png");
 	}
 }

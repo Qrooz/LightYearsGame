@@ -5,14 +5,15 @@ namespace ly {
 	Boss::Boss(World* world)
 		: EnemySpaceship{world, "SpaceShooterRedux/PNG/Enemies/boss.png" },
 		mSpeed{100.f},
+		mBaseSpeed{100.f},
 		mSwitchDistanceToEdge{100.f},
-		mBaseShooterLeft{ this, 1.0f, {-50.f,-50.f}, 90.f},
-		mBaseShooterRight{ this, 1.0f, {50.f,-50.f}, 90.f},
-		mThreeWayShooter{ this, 4.f, {0.f, -140.f}, 90.f },
-		mFrontalWiperLeft{ this, 5.f, {-80.f, -80.f}, 60.f, 90.f },
-		mFrontalWiperRight{ this, 5.f, {80.f, -80.f}, 60.f, 90.f },
-		mFinalStageShooterLeft{ this, 0.3f, {-150.f, -50.f}, 90.f },
-		mFinalStageShooterRight{ this, 0.3f, {150.f, -50.f}, 90.f },
+		mBaseShooterLeft{ this, 1.5f, {-50.f,-50.f}, 90.f},
+		mBaseShooterRight{ this, 1.5f, {50.f,-50.f}, 90.f},
+		mThreeWayShooter{ this, 6.f, {0.f, -140.f}, 90.f },
+		mFrontalWiperLeft{ this, 7.f, {-80.f, -80.f}, 60.f, 90.f },
+		mFrontalWiperRight{ this, 7.f, {80.f, -80.f}, 60.f, 90.f },
+		mFinalStageShooterLeft{ this, 0.4f, {-150.f, -50.f}, 90.f },
+		mFinalStageShooterRight{ this, 0.4f, {150.f, -50.f}, 90.f },
 		mStage{1}
 	{
 		SetActorRotation(90.f);
@@ -39,6 +40,7 @@ namespace ly {
 		HealthComponent& healthComp = GetHealthComp();
 		healthComp.SetInitialHealth(3000.f, 3000.f);
 		healthComp.onHealthChanged.BindAction(GetWeakRef(), &Boss::HealthChanged);
+		//SetStage(4);
 	}
 	
 	void Boss::CheckMove()
@@ -91,6 +93,7 @@ namespace ly {
 		mFrontalWiperLeft.SetCurrentLevel(mStage);
 		mFrontalWiperRight.SetCurrentLevel(mStage);
 		mThreeWayShooter.SetCurrentLevel(mStage);
+		mSpeed = mStage * mBaseSpeed;
 	}
 	
 }
